@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'io.rest-assured:rest-assured:5.5.1',
+            'commons-codec:commons-codec:1.13',
+            'org.junit.jupiter:junit-jupiter:5.12.2',
+            'org.junit.platform:junit-platform-launcher:1.12.2',
+            'org.slf4j:slf4j-simple:2.0.17'
+    )
+}
+
+tasks.withType(Test).configureEach {
+    systemProperties(System.getProperties())
+    useJUnitPlatform()
+    def threads = System.getProperty("threads", "1").toInteger()
+    systemProperties += [
+            'junit.jupiter.execution.parallel.enabled': true,
+            'junit.jupiter.execution.parallel.mode.default': 'concurrent',
+            'junit.jupiter.execution.parallel.mode.classes.default': 'concurrent',
+            'junit.jupiter.execution.parallel.config.strategy': 'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism': threads
+    ]
+
+    // Добавляем параллелизм на уровне Gradle
+    maxParallelForks = threads > 1 ? threads : 1
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
