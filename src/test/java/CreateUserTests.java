@@ -6,7 +6,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Тестирование POST API для создания пользователей")
-public class CreateUserTests {
+public class CreateUserTests extends TestBase {
     @Test
     @DisplayName("Успешное создание пользователя")
     void createUserSuccessTest() {
@@ -16,7 +16,7 @@ public class CreateUserTests {
                 .contentType(ContentType.JSON)// Добавляем нужный заголовок
                 .body(bodyJSON)
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .statusCode(201)
                 .body("name", equalTo("Andrey"))
@@ -29,7 +29,7 @@ public class CreateUserTests {
         given()
                 .header("x-api-key", "reqres-free-v1")
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .statusCode(415);
     }
