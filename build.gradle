@@ -1,15 +1,54 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.12.0'
+    id 'io.freefair.lombok' version '8.13.1'
+    id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
 repositories {
     mavenCentral()
 }
 
+dependencyUpdates {
+    resolutionStrategy {
+        componentSelection {
+            all { ComponentSelection selection ->
+                def unstableKeywords = ['alpha', 'beta', 'rc', 'm', 'snapshot']
+                boolean isUnstable = unstableKeywords.any { keyword ->
+                    selection.candidate.version.toLowerCase().contains(keyword)
+                }
+                if (isUnstable) {
+                    selection.reject("Unstable version: ${selection.candidate.version}")
+                }
+            }
+        }
+    }
+}
+
+def restAssuredVersion = "5.5.2",
+    allureVersion = "2.29.0"
+
+allure {
+    report {
+        version.set(allureVersion)
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            junit5 {
+                adapterVersion.set(allureVersion)
+            }
+        }
+    }
+}
+
 dependencies {
     testImplementation(
-            'io.rest-assured:rest-assured:5.5.1',
-            'commons-codec:commons-codec:1.13',
+            "io.rest-assured:rest-assured:$restAssuredVersion",
+            "io.rest-assured:json-schema-validator:$restAssuredVersion",
+            'com.fasterxml.jackson.core:jackson-core:2.19.0',
+            "io.qameta.allure:allure-rest-assured:$allureVersion",
+            'commons-codec:commons-codec:1.18.0',
             'org.junit.jupiter:junit-jupiter:5.12.2',
             'org.junit.platform:junit-platform-launcher:1.12.2',
             'org.slf4j:slf4j-simple:2.0.17'
