@@ -5,6 +5,6 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class LoginResponseModel {
-    private LoginResponseDataModel data;
+public class LoginResponseErrorModel {
+    private String error;
 }
