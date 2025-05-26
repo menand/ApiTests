@@ -6,24 +6,23 @@ import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.CreateUserSpecs.*;
+
+import static specs.Specs.*;
 
 @DisplayName("Тестирование POST API для создания пользователей")
 public class CreateUserTests extends TestBase {
     @Test
     @DisplayName("Успешное создание пользователя")
     void createUserSuccessTest() {
-        CreateUserBodyModel createUserBody = new CreateUserBodyModel();
-        createUserBody.setName("Andrey");
-        createUserBody.setJob("AQA");
+        CreateUserBodyModel createUserBody = new CreateUserBodyModel("Andrey","AQA");
 
         CreateUserResponseModel response =  step("Отправляем запрос", ()->
-                given(createUserSuccessSpec)
+                given(requestSpecSuccess)
                         .body(createUserBody)
                         .when()
                         .post("")
                         .then()
-                        .spec(createUserSuccessResponseSpec)
+                        .spec(responseWithStatus(201))
                         .extract().as(CreateUserResponseModel.class));
 
         step("Проверяем имя", ()->
@@ -38,11 +37,11 @@ public class CreateUserTests extends TestBase {
     @DisplayName("Ошибка при создании пользователя - не указан content-type")
     void createUserWithoutBodyUnSuccessTest() {
         step("Отправляем запрос, проверяем что в ответе 415 ошибка", ()->
-                given(createUserErrorSpec)
+                given(requestSpecNoContentType)
                         .when()
                         .post("")
                         .then()
-                        .spec(createUserErrorResponseSpec));
+                        .spec(responseWithStatus(415)));
     }
 
 }
