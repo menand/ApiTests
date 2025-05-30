@@ -20,7 +20,7 @@ public class CreateUserTests extends TestBase {
                 given(requestSpecSuccess)
                         .body(createUserBody)
                         .when()
-                        .post("")
+                        .post("/users")
                         .then()
                         .spec(responseWithStatus(201))
                         .extract().as(CreateUserResponseModel.class));
@@ -39,7 +39,7 @@ public class CreateUserTests extends TestBase {
         step("Отправляем запрос, проверяем что в ответе 415 ошибка", ()->
                 given(requestSpecNoContentType)
                         .when()
-                        .post("")
+                        .post("/users")
                         .then()
                         .spec(responseWithStatus(415)));
     }

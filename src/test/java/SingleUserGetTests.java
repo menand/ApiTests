@@ -18,7 +18,7 @@ public class SingleUserGetTests  extends TestBase{
         LoginResponseErrorModel response =  step("Отправляем запрос", ()->
                 given(requestSpecNoAPIKey)
                         .when()
-                        .get("1")
+                        .get("/users/1")
                         .then()
                             .spec(responseWithStatus(401))
                             .extract().as(LoginResponseErrorModel.class));
@@ -33,7 +33,7 @@ public class SingleUserGetTests  extends TestBase{
         step("Отправляем запрос", ()->
                 given(requestSpecSuccess)
                         .when()
-                        .get("9999")
+                        .get("/users/9999")
                         .then()
                         .spec(responseWithStatus(404)));
     }
@@ -44,7 +44,7 @@ public class SingleUserGetTests  extends TestBase{
         LoginResponseModel response =  step("Отправляем запрос", ()->
              given(requestSpecSuccess)
                     .when()
-                    .get("5")
+                    .get("/users/5")
                     .then()
                      .spec(responseWithStatus(200))
                      .extract().as(LoginResponseModel.class));

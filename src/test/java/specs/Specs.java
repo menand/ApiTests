@@ -15,19 +15,16 @@ public class Specs {
             .filter(withCustomTemplates())
             .header("x-api-key", "reqres-free-v1")
             .contentType(ContentType.JSON)
-            .log().all()
-            .basePath("/api/users/");
+            .log().all();
 
     public static RequestSpecification requestSpecNoContentType = with()
             .filter(withCustomTemplates())
             .header("x-api-key", "reqres-free-v1")
-            .log().all()
-            .basePath("/api/users/");
+            .log().all();
 
     public static RequestSpecification requestSpecNoAPIKey = with()
             .filter(withCustomTemplates())
-            .log().all()
-            .basePath("/api/users/");
+            .log().all();
 
     public static ResponseSpecification responseWithStatus(int statusCode) {
         return new ResponseSpecBuilder()
